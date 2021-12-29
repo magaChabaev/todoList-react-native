@@ -23,6 +23,7 @@ const TodoApp = ({
   showAll,
   showCompleted,
   showUncompleted,
+  tasksToCount,
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedPicker, setSelectedPicker] = useState('all');
@@ -48,8 +49,18 @@ const TodoApp = ({
               else return showAll();
             }}>
             <Picker.Item label="All" value="all" />
-            <Picker.Item label="Completed" value="done" />
-            <Picker.Item label="Uncompleted" value="notDone" />
+            <Picker.Item
+              label={`${
+                tasksToCount.filter(el => el.completed).length
+              } Completed`}
+              value="done"
+            />
+            <Picker.Item
+              label={`${
+                tasksToCount.filter(el => !el.completed).length
+              } Uncompleted`}
+              value="notDone"
+            />
           </Picker>
         </View>
         <View style={styles.tasks}>
@@ -133,6 +144,7 @@ const styles = StyleSheet.create({
 const mapState = state => {
   return {
     tasks: select(state.tasks, state.filter),
+    tasksToCount: state.tasks,
   };
 };
 
